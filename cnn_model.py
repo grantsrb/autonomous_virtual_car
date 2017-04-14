@@ -9,6 +9,10 @@ def show_img(img):
     plt.imshow(img)
     plt.show()
 
+CROP_SIZE = 50
+
+############ Data Section
+
 def get_lines(path):
     lines = []
     with open(path, 'r') as csv_file:
@@ -17,53 +21,61 @@ def get_lines(path):
             lines.append(line)
     return lines
 
-def read_data(lines, root_path, flip=False)
-    images = []
-    angles = []
+def read_data(lines, images, angles, root_path, add_flip=False, add_half_flip=False, only_flip=False):
     for i,line in enumerate(lines):
         img_path = line[0]
         img_name = img_path.split('/')[-1]
         img_path = root_path + img_name
         img = mpimg.imread(img_path)
+        img = img[CROP_SIZE:] # Crops out upper parts of img
         angle = float(line[3])
-        images.append(img)
-        angles.append(angle)
-        if flip:
+        if not only_flip:
+            images.append(img)
+            angles.append(angle)
+        if (add_half_flip and i % 2 == 0) or add_flip or only_flip:
             images.append(np.fliplr(img)) ## Add image reflected over y-axis
             angles.append(-angle)
     return images, angles
 
+images = []
+angles = []
 
 path = './drive_logs/driving_log.csv'
 lines = get_lines(path)
-images, angles = read_data(lines, './drive_logs/IMG/', flip=True)
+print("Begin reading images set 1")
+images, angles = read_data(lines, images, angles, './drive_logs/IMG/', add_flip=True)
 
 path = './drive_logs/driving_log1.csv'
-lines = lines + get_lines(path)
-images1, angles1 = read_data(lines, './drive_logs/IMG1/', flip=True)
+lines = get_lines(path)
+print("Begin reading images set 2")
+images, angles = read_data(lines, images, angles, './drive_logs/IMG1/', add_half_flip=True)
 
-path = './drive_logs/driving_log2.csv'
-lines = lines + get_lines(path)
-images2, angles2 = read_data(lines, './drive_logs/IMG2/', flip=True)
+# path = './drive_logs/driving_log2.csv'
+# lines = get_lines(path)
+# print("Begin reading images set 3")
+# images, angles = read_data(lines, images, angles, './drive_logs/IMG2/')
 
-images = images + images2 + images3
-del images2
-del images3
-angles = angles + angles2 + angles3
-del angles2
-del angles3
+print("Begin conversion to numpy")
+X_train = np.array(images, dtype=np.float32)
+del images
+y_train = np.array(angles, dtype=np.float32)
+del angles
 
 
-X_train, y_train = np.array(images, dtype=np.float32), np.array(angles, dtype=np.float32)
-print(X_train.shape)
-print(y_train.shape)
+print("Features Shape: " + str(X_train.shape))
+print("Labels Shape: " + str(y_train.shape))
 
+print("Begin shuffle")
 X_train, y_train = shuffle(X_train, y_train)
 
+
+################ Keras Section
+print("Begin Keras Imports")
 from keras.models import Sequential, Model
 from keras.layers import Conv2D, MaxPooling2D, Dense, Input, concatenate, \
         Flatten, Dropout, Lambda
 
+print("Begin model construction")
 towers = []
 conv_shapes = [1,3,5]
 depths = [6,8,8,6]
@@ -95,11 +107,14 @@ fc_layer = Dense(25, activation='elu')(fc_layer)
 output = Dense(1)(fc_layer)
 
 model = Model(inputs=inputs, outputs=output)
-model.load_weights('./model.h5')
+print("Begin load weights")
+model.load_weights('./cropped_model.h5')
+print("Begin model compile")
 model.compile(loss='mse', optimizer='adam')
-model.fit(X_train, y_train, nb_epoch=2, batch_size=128, validation_split=0.3, shuffle=True)
+print("Begin model fit")
+model.fit(X_train, y_train, epochs=2, batch_size=128, validation_split=0.25, shuffle=True)
 
-model.save('model.h5')
+model.save('cropped_model.h5')
 
 
 
