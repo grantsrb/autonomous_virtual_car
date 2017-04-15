@@ -40,20 +40,20 @@ def read_data(lines, images, angles, root_path, add_flip=False, add_half_flip=Fa
 images = []
 angles = []
 
-path = './drive_logs/driving_log.csv'
+path = './improved_data/centered_log.csv'
 lines = get_lines(path)
 print("Begin reading images set 1")
-images, angles = read_data(lines, images, angles, './drive_logs/IMG/', add_flip=True)
+images, angles = read_data(lines, images, angles, './improved_data/centered/', add_flip=True)
 
-path = './drive_logs/driving_log1.csv'
+path = './improved_data/corrections_log.csv'
 lines = get_lines(path)
 print("Begin reading images set 2")
-images, angles = read_data(lines, images, angles, './drive_logs/IMG1/', add_half_flip=True)
+images, angles = read_data(lines, images, angles, './improved_data/corrections/')
 
-# path = './drive_logs/driving_log2.csv'
-# lines = get_lines(path)
-# print("Begin reading images set 3")
-# images, angles = read_data(lines, images, angles, './drive_logs/IMG2/')
+path = './improved_data/curves_log.csv'
+lines = get_lines(path)
+print("Begin reading images set 3")
+images, angles = read_data(lines, images, angles, './improved_data/curves/', add_flip=True)
 
 print("Begin conversion to numpy")
 X_train = np.array(images, dtype=np.float32)
@@ -98,23 +98,23 @@ for i in range(1,len(depths)):
 
     layer = concatenate(towers, axis=3)
     if i % 2 == 0:
-        layer = Dropout(.2)(layer)
+        layer = Dropout(.1)(layer)
     maxPool = MaxPooling2D((2,2), strides=(2,2),padding='valid')(layer)
 
 flat_layer = Flatten()(maxPool)
-flat_layer = Dropout(.5)(flat_layer)
+flat_layer = Dropout(.4)(flat_layer)
 
 fc_layer = Dense(100, activation='elu')(flat_layer)
 fc_layer = Dense(25, activation='elu')(fc_layer)
 output = Dense(1)(fc_layer)
 
 model = Model(inputs=inputs, outputs=output)
-# print("Begin load weights")
-# model.load_weights('./cropped_model.h5')
+print("Begin load weights")
+model.load_weights('./cropped_5convs.h5')
 print("Begin model compile")
 model.compile(loss='mse', optimizer='adam')
 print("Begin model fit")
-model.fit(X_train, y_train, epochs=2, batch_size=128, validation_split=0.25, shuffle=True)
+model.fit(X_train, y_train, epochs=1, batch_size=128, validation_split=0.25, shuffle=True)
 
 model.save('cropped_5convs.h5')
 

@@ -16,6 +16,7 @@ from keras.models import load_model
 import h5py
 from keras import __version__ as keras_version
 
+import canny_augment as canny
 CROP_SIZE = 50
 
 sio = socketio.Server()
@@ -63,6 +64,7 @@ def telemetry(sid, data):
         imgString = data["image"]
         image = Image.open(BytesIO(base64.b64decode(imgString)))
         image_array = np.asarray(image)
+        image_array = canny.add_edges(image_array)
         image_array = image_array[CROP_SIZE:] # Add cropping
         steering_angle = float(model.predict(image_array[None, :, :, :], batch_size=1))
 

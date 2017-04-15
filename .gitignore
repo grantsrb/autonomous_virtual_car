@@ -1,2 +1,5 @@
 drive_logs/
 mac_sim.app
+__pycache__/
+test_imgs/
+improved_data/

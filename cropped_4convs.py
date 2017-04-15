@@ -4,6 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 from sklearn.utils import shuffle
+import canny_augment as canny
 
 def show_img(img):
     plt.imshow(img)
@@ -21,12 +22,14 @@ def get_lines(path):
             lines.append(line)
     return lines
 
-def read_data(lines, images, angles, root_path, add_flip=False, add_half_flip=False, only_flip=False):
+def read_data(lines, images, angles, root_path, add_edges=True, add_flip=False, add_half_flip=False, only_flip=False):
     for i,line in enumerate(lines):
         img_path = line[0]
         img_name = img_path.split('/')[-1]
         img_path = root_path + img_name
         img = mpimg.imread(img_path)
+        if add_edges:
+            img = canny.add_edges(img)
         img = img[CROP_SIZE:] # Crops out upper parts of img
         angle = float(line[3])
         if not only_flip:
@@ -40,20 +43,22 @@ def read_data(lines, images, angles, root_path, add_flip=False, add_half_flip=Fa
 images = []
 angles = []
 
-path = './drive_logs/driving_log.csv'
+path = './improved_data/centered_log.csv'
 lines = get_lines(path)
 print("Begin reading images set 1")
-images, angles = read_data(lines, images, angles, './drive_logs/IMG/', add_flip=True)
+images, angles = read_data(lines, images, angles, './improved_data/centered/', add_flip=True)
 
-path = './drive_logs/driving_log1.csv'
+path = './improved_data/corrections_log.csv'
 lines = get_lines(path)
 print("Begin reading images set 2")
-images, angles = read_data(lines, images, angles, './drive_logs/IMG1/', add_half_flip=True)
+images, angles = read_data(lines, images, angles, './improved_data/corrections/')
 
-# path = './drive_logs/driving_log2.csv'
-# lines = get_lines(path)
-# print("Begin reading images set 3")
-# images, angles = read_data(lines, images, angles, './drive_logs/IMG2/')
+path = './improved_data/curves_log.csv'
+lines = get_lines(path)
+print("Begin reading images set 3")
+images, angles = read_data(lines, images, angles, './improved_data/curves/', add_flip=True)
+
+
 
 print("Begin conversion to numpy")
 X_train = np.array(images, dtype=np.float32)
@@ -112,7 +117,7 @@ model.load_weights('./cropped_model.h5')
 print("Begin model compile")
 model.compile(loss='mse', optimizer='adam')
 print("Begin model fit")
-model.fit(X_train, y_train, epochs=2, batch_size=128, validation_split=0.25, shuffle=True)
+model.fit(X_train, y_train, epochs=3, batch_size=128, validation_split=0.25, shuffle=True)
 
 model.save('cropped_model.h5')
 
