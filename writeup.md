@@ -57,21 +57,21 @@ The model.py file contains the code for training and saving the convolution neur
 
 #### 1. An appropriate model architecture has been employed
 
-The model is a convolutional neural network that begins with a preprocessing step to center and normalize the inputs (model.py line 98), then followed by 4 sets of a 1x1, 3x3, and 5x5 filter size convolutions. Each convolutional set is followed by a max pooling layer (model.py lines 102-115). There is then a dropout layer (model.py line 118) followed by 2 fully connected layers of sizes 100 and 25, and finally an output layer (model.py lines 121-123).
+The model is a convolutional neural network that begins with a preprocessing step to center and normalize the inputs (model.py line 99), then followed by 4 sets of a 1x1, 3x3, and 5x5 filter size convolutions. Each convolutional set is followed by a max pooling layer (model.py lines 103-116). There is then a dropout layer (model.py line 119) followed by 2 fully connected layers of sizes 100 and 25, and finally an output layer (model.py lines 122-124).
 
-At each convolutional layer the model splits and runs a 1x1, a 3x3, and a 5x5 filter on the incoming activation inputs. It is important to note that the filters are not run sequentially but rather in parallel to each other. The padding is 'SAME' so that the outputs from each filter is of the same size. These outputs are then stacked and used as the activations for the next layer. This model architecture is inspired by the Inception Net, but simpler. and depths between 32 and 128 (model.py lines 18-24)
+At each convolutional layer the model splits and runs a 1x1, a 3x3, and a 5x5 filter on the incoming activation inputs. It is important to note that the filters are not run sequentially but rather in parallel to each other. The padding is 'SAME' so that the outputs from each filter is of the same size. These outputs are then stacked and used as the activations for the next layer. This model architecture is inspired by the Inception Net, but simpler.
 
 The model includes an ELU activation at each convolution and each fully connected layer to introduce nonlinearity.
 
 #### 2. Attempts to reduce overfitting in the model
 
-The model contains a dropout layer, as described in the previous section, in order to reduce overfitting (model.py lines 21).
+The model contains a dropout layer, as described in the previous section, in order to reduce overfitting (model.py line 118).
 
 The model was trained and validated on multiple datasets to ensure that the model was not overfitting. The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track.
 
 #### 3. Model parameter tuning
 
-The model used an adam optimizer, so the learning rate was not tuned manually (model.py line 130).
+The model used an adam optimizer, so the learning rate was not tuned manually (model.py line 131).
 
 #### 4. Appropriate training data
 
