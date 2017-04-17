@@ -9,7 +9,7 @@ In this project, I used what I've learned about deep neural networks and convolu
 
 The simulator has been provided by Udacity, where you can steer a car around a track for data collection. The image data and steering angles are used to train a neural network and then use this model to drive the car autonomously around the track.
 
-See my detailed writeup of the project [here](../blob/master/writeup.md)
+See my detailed writeup of the project [here](./writeup.md)
 
 To meet specifications, the project required submitting five files:
 * model.py (script used to create and train the model)
