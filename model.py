@@ -126,13 +126,13 @@ output = Dense(1)(fc_layer)
 print("Running Time: " + str(int(time.time() - base_time))+"s")
 model = Model(inputs=inputs, outputs=output)
 print("Begin load weights")
-model.load_weights('./cropped_4convs_t2.h5')
+model.load_weights('./model.h5')
 print("Begin model compile")
 model.compile(loss='mse', optimizer='adam')
 print("Begin model fit")
-model.fit(X_train, y_train, epochs=1, batch_size=128, validation_split=0.25, shuffle=True)
+model.fit(X_train, y_train, epochs=10, batch_size=128, validation_split=0.25, shuffle=True)
 
-model.save('cropped_4convs_t2.h5')
+model.save('model.h5')
 print("Total Running Time: " + str((time.time() - base_time)//60) + "mins")
 
 

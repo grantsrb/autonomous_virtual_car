@@ -6,6 +6,8 @@
 
 ---
 
+[Link to mp4 file](../blob/master/run1.mp4)
+
 **Behavioral Cloning Project**
 
 The goals / steps of this project are the following:
