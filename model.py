@@ -47,8 +47,8 @@ def read_data(lines, images, angles, root_path, add_edges=True, add_flip=False, 
 logs_and_imgs_folder = 'improved_data'
 log_names = ['t2_centered_log','t2_corrections_log','t2_curves_log','t2_reinforcement_log']
 IMG_folder_names = ['t2_centered','t2_corrections','t2_curves','t2_reinforcement']
-add_flips = [True, False, True, False]
-add_half_flips = [False, True, False, True]
+add_flips = [True, True, True, True]
+add_half_flips = [False, False,False, False]
 
 images = []
 angles = []
@@ -126,13 +126,13 @@ output = Dense(1)(fc_layer)
 print("Running Time: " + str(int(time.time() - base_time))+"s")
 model = Model(inputs=inputs, outputs=output)
 print("Begin load weights")
-model.load_weights('./model.h5')
+model.load_weights('./cropped_4convs_t2.h5')
 print("Begin model compile")
 model.compile(loss='mse', optimizer='adam')
 print("Begin model fit")
-model.fit(X_train, y_train, epochs=10, batch_size=128, validation_split=0.25, shuffle=True)
+model.fit(X_train, y_train, epochs=2, batch_size=128, validation_split=0.1, shuffle=True)
 
-model.save('model.h5')
+model.save('cropped_4convs_t2.h5')
 print("Total Running Time: " + str((time.time() - base_time)//60) + "mins")
 
 
