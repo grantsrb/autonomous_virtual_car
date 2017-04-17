@@ -114,7 +114,7 @@ model.load_weights('./cropped_5convs.h5')
 print("Begin model compile")
 model.compile(loss='mse', optimizer='adam')
 print("Begin model fit")
-model.fit(X_train, y_train, epochs=1, batch_size=128, validation_split=0.25, shuffle=True)
+model.fit(X_train, y_train, epochs=6, batch_size=128, validation_split=0.25, shuffle=True)
 
 model.save('cropped_5convs.h5')
 
