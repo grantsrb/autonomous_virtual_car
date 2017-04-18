@@ -19,6 +19,14 @@ To meet specifications, the project required submitting five files:
 * a report writeup file (either markdown or pdf)
 * video.mp4 (a video recording of your vehicle driving autonomously around the track for at least one full lap)
 
+I additionally included the following files:
+* model_w_generator.py (script to create and train model using a python generator)
+* canny_augment.py (script to add canny edge detection to images)
+
+The model_w_generator.py script reads the training images into memory batch by batch instead of all at once. This allows for training on greater datasets because it uses less memory.
+
+The canny_augment.py function applies canny edge detection to the images which improved the classifier's performance.
+
 This README file describes how to output the video in the "Details About Files In This Directory" section.
 
 ### The Project

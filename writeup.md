@@ -84,6 +84,8 @@ For details about how I created the training data, see the next section.
 
 #### 1. Solution Design Approach
 
+##### Track 1
+
 The strategy for designing a predictive model was to start simple and progressively add convolutional and fully connected layers as needed.
 
 My first step was to use a convolution neural network model that derives its architecture from both the LeNet and Inception Net architectures. I thought this model might be appropriate because I have had success using it in other image classification projects, it is quick to train with relatively few parameters, and it is easy to adjust and augment.
@@ -96,7 +98,9 @@ I then tried redoing the curves and corrections driving data. This drastically h
 
 At this point, I decided that augmenting the images to indicate the difference between road and dirt would likely give the quickest improvements. I added a canny edge detection preprocessing step (canny_augment.py) to each of the data images and added it to the autonomous driving pipeline (drive.py line 19,67). This drastically improved performance and the car successfully drove around track one.
 
-I followed nearly the same process for training the model to navigate track 2. I included, however, the data from track one in the training for track 2. This resulted in a robust model that successfully navigates both tracks forward and backward.
+##### Track 2
+
+I followed nearly the same process for training the model to navigate track 2. I included, however, the data from track one in the training for track 2. This resulted in a robust model that successfully navigates both tracks forward and backward. I was able to do this by using a python generator to read the data into memory in batches. This takes up less memory and allows for use of much larger datasets during training.
 
 #### 2. Final Model Architecture
 
