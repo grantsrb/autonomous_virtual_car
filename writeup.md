@@ -6,7 +6,7 @@
 
 ---
 
-[Link to mp4 file](./run1.mp4)
+Links to [track1](./track1.mp4) and [track2](./track2.mp4) video files of the car driving itself.
 
 **Behavioral Cloning Project**
 
@@ -96,6 +96,8 @@ I then tried redoing the curves and corrections driving data. This drastically h
 
 At this point, I decided that augmenting the images to indicate the difference between road and dirt would likely give the quickest improvements. I added a canny edge detection preprocessing step (canny_augment.py) to each of the data images and added it to the autonomous driving pipeline (drive.py line 19,67). This drastically improved performance and the car successfully drove around track one.
 
+I followed nearly the same process for training the model to navigate track 2. I included, however, the data from track one in the training for track 2. This resulted in a robust model that successfully navigates both tracks forward and backward.
+
 #### 2. Final Model Architecture
 
 The final model architecture (model.py lines 92-124) consisted of a convolution neural network with the following layers and layer sizes:
@@ -143,8 +145,8 @@ To augment the data sat, I flipped a portion of the images (and corresponding an
 
 After the collection and augmentation, I had about 22,302 images. I preprocessed them by first cropping off the top 50 pixels of the images to allow the model to focus better on the road and to cut RAM use and speed up training.
 
-![alt text][image1]
 ![alt text][image2]
+![alt text][image1]
 
 And then I added canny edge detection to the images with a lower threshold of 30 and an upper of 160. I considered further manipulation of the canny edges to focus on isolation of the edges of the road, but the classification model was able to ignore unimportant canny edges on its own. In the end, I left the canny edges as they came. I believe they highlighted both the texture of the road and the edges of the road making these features easier for the model to notice.
 

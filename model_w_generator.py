@@ -81,8 +81,8 @@ def epoch_steps(data_folder,log_names, batch_size=128):
 base_time = time.time()
 
 data_folder = 'improved_data'
-log_names = ['t2_centered_log','t2_corrections_log','t2_curves_log','t2_reinforcement_log']
-IMG_folders = ['t2_centered','t2_corrections','t2_curves','t2_reinforcement']
+log_names = ['t2_centered_log','t2_corrections_log','t2_curves_log','t2_reinforcement_log', 'centered_log']
+IMG_folders = ['t2_centered','t2_corrections','t2_curves','t2_reinforcement', 'centered']
 
 n_steps = epoch_steps(data_folder, log_names)
 
