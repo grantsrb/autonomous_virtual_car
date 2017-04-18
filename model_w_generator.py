@@ -73,7 +73,6 @@ def epoch_steps(data_folder,log_names, batch_size=128):
         path = './'+data_folder+'/' + log + '.csv'
         lines = get_lines(path)
         total += len(lines)
-    print("Total: " + str(total))
     if (2*total) % batch_size == 0: return (2*total)//batch_size
     return (2*total)//batch_size+1
 
@@ -87,7 +86,7 @@ IMG_folders = ['t2_centered','t2_corrections','t2_curves','t2_reinforcement']
 
 n_steps = epoch_steps(data_folder, log_names)
 
-train_generator = data_generator(data_folder, log_names, IMG_folders, add_flips, add_half_flips)
+train_generator = data_generator(data_folder, log_names, IMG_folders)
 
 
 ################ Keras Section
