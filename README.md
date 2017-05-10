@@ -3,6 +3,12 @@
 
 ## Satchel Grant
 
+**Video Demonstrations**
+
+_[Easy Track](./track1.mp4)_
+
+_[Hard Track](./track2.mp4)_
+
 ### Overview
 ---
 
